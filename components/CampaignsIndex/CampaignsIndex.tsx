@@ -12,20 +12,25 @@ import { assets, chains, ibc } from "chain-registry";
 import { ValidatorName } from "../ValidatorName/ValidatorName";
 import Link from "next/link";
 import { Chain } from "../Chain/Chain";
-import { CampaignCreationSettings } from "../../hooks/cwCodegen/factory/Factory.types";
+import {
+  Campaign,
+  CampaignCreationSettings,
+} from "../../hooks/cwCodegen/factory/Factory.types";
 import { CampaignStatusResponse } from "../../hooks/cwCodegen/campaign/Campaign.types";
 
-const campaigns: (CampaignCreationSettings & {
+const campaigns: (Campaign & {
   campaignStatus: CampaignStatusResponse;
 })[] = [
   {
-    validator_address: "cosmosvaloper1kn3wugetjuy4zetlq6wadchfhvu3x740ae6z6x",
+    campaign_addr:
+      "neutron1dwp6m7pdrz6rnhdyrx5ha0acsduydqcpzkylvfgspsz60pj2agxqaqrr7g",
+    // validator_address: "cosmosvaloper1kn3wugetjuy4zetlq6wadchfhvu3x740ae6z6x",
     target_position: 103,
     connection_id: "connection-0",
     //epochConverter
-    expiration: 1730419199,
-    remote_staking_denom: "uatom",
-    reward_distribution_type: { Daily: { num_of_days: 30 } },
+    // expiration: 1730419199,
+    // remote_staking_denom: "uatom",
+    // reward_distribution_type: { Daily: { num_of_days: 30 } },
     campaignStatus: {
       campaign_info: {
         connection_id: "connection-0",
