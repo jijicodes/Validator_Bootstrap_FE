@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen:campaign": "npx cosmwasm-ts-codegen generate --plugin react-query --optionalClient --version v4 --schema ./cwSchemas/campaign/ --out ./hooks/cwCodegen/campaign --name campaign --no-bundle --no-queryKeys --mutations",
+    "codegen:factory": "npx cosmwasm-ts-codegen generate --plugin react-query --optionalClient --version v4 --schema ./cwSchemas/factory/ --out ./hooks/cwCodegen/factory --name factory --no-bundle --no-queryKeys --mutations",
+    "codegen": "yarn codegen:campaign && yarn codegen:factory"
   },
   "dependencies": {
     "@chain-registry/types": "0.17.0",
@@ -39,6 +42,7 @@
     "styled-components": "5.3.11"
   },
   "devDependencies": {
+    "@cosmwasm/ts-codegen": "^0.35.3",
     "@tanstack/eslint-plugin-query": "^5.0.0-rc.5",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",

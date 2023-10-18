@@ -12,14 +12,34 @@ import { assets, chains, ibc } from "chain-registry";
 import { ValidatorName } from "../ValidatorName/ValidatorName";
 import Link from "next/link";
 import { Chain } from "../Chain/Chain";
+import { CampaignCreationSettings } from "../../hooks/cwCodegen/factory/Factory.types";
+import { CampaignStatusResponse } from "../../hooks/cwCodegen/campaign/Campaign.types";
 
-const campaigns = [
+const campaigns: (CampaignCreationSettings & {
+  campaignStatus: CampaignStatusResponse;
+})[] = [
   {
     validator_address: "cosmosvaloper1kn3wugetjuy4zetlq6wadchfhvu3x740ae6z6x",
     target_position: 103,
-    campaign_address:
-      "neutron1m2emc93m9gpwgsrsf2vylv9xvgqh654630v7dfrhrkmr5slly53spg85wv",
-    chain: "osmosis-1",
+    connection_id: "connection-0",
+    //epochConverter
+    expiration: 1730419199,
+    remote_staking_denom: "uatom",
+    reward_distribution_type: { Daily: { num_of_days: 30 } },
+    campaignStatus: {
+      campaign_info: {
+        connection_id: "connection-0",
+        expiration: "2024-10-30T14:48:00.000Z",
+        factory_contract_addr: "neutron123factory",
+        remote_staking_denom: "uatom",
+        reward_distribution_type: { Daily: { num_of_days: 30 } },
+        target_position: 103,
+        validator_address:
+          "cosmosvaloper1kn3wugetjuy4zetlq6wadchfhvu3x740ae6z6x",
+      },
+      reward_tokens: [{ amount: "3000000000", denom: "uatom" }],
+      state: "Active",
+    },
   },
   {
     validator_address: "cosmosvaloper103agss48504gkk3la5xcg5kxplaf6ttnuv234h",
