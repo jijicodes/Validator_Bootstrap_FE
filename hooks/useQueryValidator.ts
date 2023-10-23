@@ -1,9 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { AvailableChain } from "../components/Utils/chainOptions";
-
-interface ValidatorResp {
-  validator: Validator;
-}
+import { AvailableChain } from "../utils/chains";
 
 export interface Validator {
   operator_address: string;
@@ -17,6 +13,7 @@ export interface Validator {
   unbonding_time: string;
   commission: Commission;
   min_self_delegation: string;
+  icon?: string;
 }
 
 interface Commission {
@@ -43,15 +40,15 @@ interface Description {
   details: string;
 }
 
-export const fetchVal = (chainId: AvailableChain, addr: string) =>
-  fetch("http://validators-api.herokuapp.com/allValidators/cosmoshub-4")
+export const fetchVal = (chainId: AvailableChain) =>
+  fetch(`http://validators-api.herokuapp.com/allValidators/${chainId}`)
     .then((r) => r.json())
-    .then((validator) => {
-      return validator;
+    .then((validators: Validator[]) => {
+      return validators;
     });
 
 export const useQueryValidator = (chainId: AvailableChain, addr: string) =>
   useQuery({
-    queryKey: ["validator", chainId, addr],
-    queryFn: () => fetchVal(chainId, addr),
+    queryKey: ["validator", chainId],
+    queryFn: () => fetchVal(chainId),
   });

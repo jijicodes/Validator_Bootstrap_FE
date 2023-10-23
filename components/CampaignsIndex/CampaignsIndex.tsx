@@ -7,60 +7,14 @@ import {
   TableRow,
   TableHeader,
   Button,
+  Image,
 } from "grommet";
-import { assets, chains, ibc } from "chain-registry";
+import { assets, ibc, chains as registryChains } from "chain-registry";
 import { ValidatorName } from "../ValidatorName/ValidatorName";
 import Link from "next/link";
 import { Chain } from "../Chain/Chain";
-import {
-  Campaign,
-  CampaignCreationSettings,
-} from "../../hooks/cwCodegen/factory/Factory.types";
-import { CampaignStatusResponse } from "../../hooks/cwCodegen/campaign/Campaign.types";
-
-const campaigns: (Campaign & {
-  campaignStatus: CampaignStatusResponse;
-})[] = [
-  {
-    campaign_addr:
-      "neutron1dwp6m7pdrz6rnhdyrx5ha0acsduydqcpzkylvfgspsz60pj2agxqaqrr7g",
-    // validator_address: "cosmosvaloper1kn3wugetjuy4zetlq6wadchfhvu3x740ae6z6x",
-    target_position: 103,
-    connection_id: "connection-0",
-    //epochConverter
-    // expiration: 1730419199,
-    // remote_staking_denom: "uatom",
-    // reward_distribution_type: { Daily: { num_of_days: 30 } },
-    campaignStatus: {
-      campaign_info: {
-        connection_id: "connection-0",
-        expiration: "2024-10-30T14:48:00.000Z",
-        factory_contract_addr: "neutron123factory",
-        remote_staking_denom: "uatom",
-        reward_distribution_type: { Daily: { num_of_days: 30 } },
-        target_position: 103,
-        validator_address:
-          "cosmosvaloper1kn3wugetjuy4zetlq6wadchfhvu3x740ae6z6x",
-      },
-      reward_tokens: [{ amount: "3000000000", denom: "uatom" }],
-      state: "Active",
-    },
-  },
-  {
-    validator_address: "cosmosvaloper103agss48504gkk3la5xcg5kxplaf6ttnuv234h",
-    target_position: 89,
-    campaign_address:
-      "neutron1dwp6m7pdrz6rnhdyrx5ha0acsduydqcpzkylvfgspsz60pj2agxqaqrr7g",
-    chain: "stargaze-1",
-  },
-  {
-    validator_address: "cosmosvaloper16qnr6snzq49l6grkyu39lzchnfv3ajfdvejx55",
-    target_position: 50,
-    campaign_address:
-      "neutron1dwp6m7pdrz6rnhdyrx5ha0acsduydqcpzkylvfgspsz60pj2agxqaqrr7g",
-    chain: "juno-1",
-  },
-];
+import { campaignsInfo } from "../../utils/campaignsInfo";
+import { chains } from "../../utils/chains";
 
 export const CampaignsIndex = () => {
   return (
@@ -85,37 +39,102 @@ export const CampaignsIndex = () => {
           </TableCell>
         </TableHeader>
         <TableBody>
-          {campaigns.map(
+          {campaignsInfo.map(
             ({
-              validator_address,
+              campaign_addr,
               target_position,
-              campaign_address,
-              chain,
-            }) => (
-              <TableRow
-                key={validator_address}
-                // onClick={() => navigate(`/campaign/${campaign_address}`)}
-              >
-                <Button
-                  as={Link}
-                  href={`/campaigns/${campaign_address}`}
-                  justify="stretch"
-                  fill
-                  hoverIndicator
-                >
+              connectionId,
+              campaignStatus: {
+                campaign_info: { validator_address },
+                state,
+                reward_tokens,
+              },
+            }) => {
+              const chainId = chains[connectionId].chainId;
+              const chainInfo = registryChains.find(
+                ({ chain_id }) => chain_id === chainId
+              );
+              const chainAssets = assets.find(
+                ({ chain_name }) => chain_name === chainInfo?.chain_name
+              );
+              console.log(chainInfo, chainAssets);
+              return (
+                <TableRow key={validator_address}>
+                  <Button
+                    as={Link}
+                    href={`/campaigns/${campaign_addr}`}
+                    justify="stretch"
+                    fill
+                    hoverIndicator
+                  >
+                    <TableCell>
+                      <ValidatorName
+                        chainId={chainId}
+                        valoperAddress={validator_address}
+                      />
+                    </TableCell>
+                  </Button>
                   <TableCell>
-                    <ValidatorName
-                      chainId="cosmoshub-4"
-                      valoperAddress={validator_address}
-                    />
+                    <Chain chain={chainId} />
                   </TableCell>
-                </Button>
-                <TableCell>
-                  <Chain chain={chain} />
-                </TableCell>
-                <TableCell justify="end">{target_position}</TableCell>{" "}
-              </TableRow>
-            )
+                  <TableCell justify="end">{target_position}</TableCell>{" "}
+                  <TableCell justify="end">
+                    <Box direction="row" gap="small">
+                      {reward_tokens.map(({ amount, denom }) => {
+                        const assetInfo = chainAssets?.assets.find(
+                          (asset) => asset.base === denom
+                        );
+                        !assetInfo &&
+                          console.log(
+                            denom,
+                            assetInfo,
+                            assetInfo,
+                            chainAssets?.assets
+                          );
+                        return assetInfo ? (
+                          <Box
+                            direction="row"
+                            gap="xsmall"
+                            key={assetInfo.base}
+                            align="center"
+                          >
+                            <Image
+                              height="25px"
+                              width="25px"
+                              src={
+                                assetInfo.logo_URIs?.jpeg ||
+                                assetInfo.logo_URIs?.png ||
+                                assetInfo.logo_URIs?.svg
+                              }
+                              alt={`${assetInfo.symbol} icon`}
+                            />
+                            <Text>
+                              {Number(amount) /
+                                10 **
+                                  assetInfo.denom_units
+                                    .map(({ exponent }) => exponent)
+                                    .reduce(
+                                      (a, b) => Math.max(a, b),
+                                      -Infinity
+                                    )}
+                            </Text>
+                            <Text>{assetInfo.symbol}</Text>
+                          </Box>
+                        ) : (
+                          <Box direction="row" gap="xsmall" key={denom}>
+                            <Text>{Number(amount)}</Text>
+                            <Text>
+                              {denom.slice(0, 8)}..
+                              {denom.slice(denom.length - 5)}
+                            </Text>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  </TableCell>{" "}
+                </TableRow>
+              );
+            }
           )}
         </TableBody>
       </Table>

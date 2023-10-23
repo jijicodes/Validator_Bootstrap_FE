@@ -1,6 +1,6 @@
 import { Box, Image, Text, TextProps } from "grommet";
 import { useQueryValidator } from "../../hooks/useQueryValidator";
-import { AvailableChain } from "../Utils/chainOptions";
+import { AvailableChain } from "../../utils/chains";
 
 type Props = {
   valoperAddress: string;
@@ -15,9 +15,9 @@ export const ValidatorName = ({
   size = "medium",
   withCommission,
 }: Props) => {
-  const { data: validator } = useQueryValidator(chainId, valoperAddress);
-  const matchingValidator = validator?.find(
-    (v) => v.operator_address === valoperAddress
+  const { data: validators } = useQueryValidator(chainId, valoperAddress);
+  const matchingValidator = validators?.find(
+    ({ operator_address }) => operator_address === valoperAddress
   );
   return (
     <Box flex="shrink">
