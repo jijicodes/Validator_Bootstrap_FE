@@ -6,11 +6,9 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import { Timestamp, Uint64, RewardDistributionType, InstantiateMsg, ExecuteMsg, Uint128, PledgeType, UserPledgeType, Pledge, UserPledge, UserRedelegation, QueryMsg, ArrayOfPledge, Addr, CampaignState, PendingStartState, EndedState, CampaignStatusResponse, CampaignInfo, Coin } from "./Campaign.types";
+import { Timestamp, Uint64, RewardDistributionType, InstantiateMsg, ExecuteMsg, Uint128, PledgeType, UserPledgeType, Pledge, UserPledge, UserRedelegation, QueryMsg, ArrayOfPledge, RewardsToDistributeNowResponse, Coin, Addr, CampaignState, PendingStartState, EndedState, CampaignStatusResponse, CampaignInfo, DistributedRewards } from "./Campaign.types";
 export interface CampaignReadOnlyInterface {
   contractAddress: string;
-  allPledges: () => Promise<AllPledgesResponse>;
-  status: () => Promise<StatusResponse>;
 }
 export class CampaignQueryClient implements CampaignReadOnlyInterface {
   client: CosmWasmClient;
@@ -19,20 +17,8 @@ export class CampaignQueryClient implements CampaignReadOnlyInterface {
   constructor(client: CosmWasmClient, contractAddress: string) {
     this.client = client;
     this.contractAddress = contractAddress;
-    this.allPledges = this.allPledges.bind(this);
-    this.status = this.status.bind(this);
   }
 
-  allPledges = async (): Promise<AllPledgesResponse> => {
-    return this.client.queryContractSmart(this.contractAddress, {
-      AllPledges: {}
-    });
-  };
-  status = async (): Promise<StatusResponse> => {
-    return this.client.queryContractSmart(this.contractAddress, {
-      Status: {}
-    });
-  };
 }
 export interface CampaignInterface extends CampaignReadOnlyInterface {
   contractAddress: string;
@@ -47,7 +33,6 @@ export interface CampaignInterface extends CampaignReadOnlyInterface {
     pledgeAddress: string;
     pledgeType: PledgeType;
   }, fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
-  cancelPledge: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
   executeDelegations: (fee?: number | StdFee | "auto", memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class CampaignClient extends CampaignQueryClient implements CampaignInterface {
@@ -62,7 +47,6 @@ export class CampaignClient extends CampaignQueryClient implements CampaignInter
     this.contractAddress = contractAddress;
     this.activateCampaign = this.activateCampaign.bind(this);
     this.pledge = this.pledge.bind(this);
-    this.cancelPledge = this.cancelPledge.bind(this);
     this.executeDelegations = this.executeDelegations.bind(this);
   }
 
@@ -86,11 +70,6 @@ export class CampaignClient extends CampaignQueryClient implements CampaignInter
         pledge_address: pledgeAddress,
         pledge_type: pledgeType
       }
-    }, fee, memo, _funds);
-  };
-  cancelPledge = async (fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
-    return await this.client.execute(this.sender, this.contractAddress, {
-      cancel_pledge: {}
     }, fee, memo, _funds);
   };
   executeDelegations = async (fee: number | StdFee | "auto" = "auto", memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {

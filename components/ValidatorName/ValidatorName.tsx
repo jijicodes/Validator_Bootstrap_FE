@@ -8,12 +8,14 @@ type Props = {
   size?: TextProps["size"];
   disabled?: boolean;
   withCommission?: boolean;
+  borderRadius?: string;
 };
 export const ValidatorName = ({
   valoperAddress,
   chainId,
   size = "medium",
   withCommission,
+  borderRadius = "10",
 }: Props) => {
   const { data: validators } = useQueryValidator(chainId, valoperAddress);
   const matchingValidator = validators?.find(
@@ -29,7 +31,7 @@ export const ValidatorName = ({
               height="30px"
               width="30px"
               style={{
-                borderRadius: 10,
+                borderRadius: borderRadius,
               }}
               src={matchingValidator?.icon}
               // fallback={`${process.env.PUBLIC_URL}/images/yieldmosmono.small.crushed.png`}

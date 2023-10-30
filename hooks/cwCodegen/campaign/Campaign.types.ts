@@ -17,6 +17,7 @@ export type RewardDistributionType = {
   };
 };
 export interface InstantiateMsg {
+  admin_address: string;
   connection_id: string;
   expiration: Timestamp;
   factory_contract_addr: string;
@@ -30,9 +31,7 @@ export type ExecuteMsg = ("cancel_campaign" | "expire_campaign") | {
   activate_campaign: string[];
 } | {
   pledge: Pledge;
-} | {
-  cancel_pledge: string;
-} | "disburse_funds" | {
+} | "cancel_pledge" | "disburse_funds" | {
   execute_delegations: UserPledge[];
 };
 export type Uint128 = string;
@@ -63,23 +62,29 @@ export interface UserRedelegation {
   from_validator: string;
   [k: string]: unknown;
 }
-export type QueryMsg = {
-  AllPledges: {
-    [k: string]: unknown;
-  };
-} | {
-  Status: {
-    [k: string]: unknown;
-  };
-};
+export type QueryMsg = ("AllPledges" | "Status") | "RewardsToDistributeNow";
 export type ArrayOfPledge = Pledge[];
+export interface RewardsToDistributeNowResponse {
+  presser_incentives: Coin[];
+  total: Coin[];
+  [k: string]: unknown;
+}
+export interface Coin {
+  amount: Uint128;
+  denom: string;
+  [k: string]: unknown;
+}
 export type Addr = string;
 export type CampaignState = {
   PendingStart: PendingStartState;
-} | "Active" | "RewardsDistribution" | {
+} | "Active" | "Delegating" | {
+  RewardsDistribution: DistributedRewards;
+} | {
   Ended: EndedState;
 };
-export type PendingStartState = "OpeningIcaChannel" | "IcaVerified" | "QueryingRewardBalances";
+export type PendingStartState = "OpeningIcaChannel" | "IcaVerified" | {
+  QueryingRewardBalances: string[];
+};
 export type EndedState = "RewardsCompleted" | "Expired" | "Cancelled";
 export interface CampaignStatusResponse {
   campaign_info: CampaignInfo;
@@ -97,8 +102,9 @@ export interface CampaignInfo {
   validator_address: string;
   [k: string]: unknown;
 }
-export interface Coin {
-  amount: Uint128;
-  denom: string;
+export interface DistributedRewards {
+  disbursements_remaining: number;
+  last_distribution: Timestamp;
+  total_distributed: Coin[];
   [k: string]: unknown;
 }

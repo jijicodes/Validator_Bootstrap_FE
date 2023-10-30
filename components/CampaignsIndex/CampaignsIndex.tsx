@@ -57,7 +57,6 @@ export const CampaignsIndex = () => {
               const chainAssets = assets.find(
                 ({ chain_name }) => chain_name === chainInfo?.chain_name
               );
-              console.log(chainInfo, chainAssets);
               return (
                 <TableRow key={validator_address}>
                   <Button

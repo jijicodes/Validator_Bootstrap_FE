@@ -1,6 +1,9 @@
 import React from "react";
 import { Campaign } from "../hooks/cwCodegen/factory/Factory.types";
-import { CampaignStatusResponse } from "../hooks/cwCodegen/campaign/Campaign.types";
+import {
+  CampaignStatusResponse,
+  Pledge,
+} from "../hooks/cwCodegen/campaign/Campaign.types";
 import {
   AvailableConnectionId,
   chains,
@@ -10,6 +13,7 @@ import {
 export const campaignsInfo: (Campaign & {
   campaignStatus: CampaignStatusResponse;
   connectionId: AvailableConnectionId;
+  pledges: Pledge[];
 })[] = [
   {
     campaign_addr:
@@ -37,7 +41,31 @@ export const campaignsInfo: (Campaign & {
       ],
       state: "RewardsDistribution" as const,
     },
+    pledges: [
+      {
+        amount: (1_000_000).toString(),
+        pledge_address: "cosmos12emutgfv7hy46khk5x36e9fczuvk9ktpp9krdu",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (3_000_000).toString(),
+        pledge_address: "cosmos16p6lrlxf7f03c0ka8cv4sznr29rym27up5d9kh",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (5_000_000).toString(),
+        pledge_address: "cosmos1p7d8mnjttcszv34pk2a5yyug3474mhffasa7tg",
+        pledge_type: {
+          Redelegation: {
+            from_validators: [
+              "cosmosvaloper1clpqr4nrk4khgkxj78fcwwh6dl3uw4epsluffn",
+            ],
+          },
+        },
+      },
+    ],
   },
+
   {
     campaign_addr:
       "neutron1436kxs0w2es6xlqpp9rd35e3d0cjnw4sv8j3a7483sgks29jqwgshlt6zh",
@@ -48,7 +76,7 @@ export const campaignsInfo: (Campaign & {
         connection_id: "connection-2",
         expiration: "2025-11-30T14:48:00.000Z",
         factory_contract_addr: "neutron456factory",
-        remote_staking_denom: "uatom",
+        remote_staking_denom: "ukuji",
         reward_distribution_type: { Daily: { num_of_days: 30 } },
         target_position: 89,
         validator_address:
@@ -57,6 +85,30 @@ export const campaignsInfo: (Campaign & {
       reward_tokens: [{ amount: "12000000000", denom: "ukuji" }],
       state: "Active" as const,
     },
+    pledges: [
+      {
+        amount: (10_000_000).toString(),
+        pledge_address: "kujira12emutgfv7hy46khk5x36e9fczuvk9ktpsd5mqk",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (2_000_000).toString(),
+        pledge_address: "kujira186j2ll6utcjh5ee6ggxzqh7q4c2l3hlmvktqar",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (1_000_000).toString(),
+        pledge_address: "kujira1c24ktf5kck3ywxyyxuvyhgmwv9hqxahf0je5fa",
+        pledge_type: {
+          Redelegation: {
+            from_validators: [
+              "kujiravaloper1546l88y0g9ch5v25dg4lmfewgelsd3v966qj3y",
+              "kujiravaloper1453e4qfcmhwyqrs2sgqmlgckzvmsgdvzzq4zdd",
+            ],
+          },
+        },
+      },
+    ],
   },
 
   {
@@ -69,7 +121,7 @@ export const campaignsInfo: (Campaign & {
         connection_id: "connection-23",
         expiration: "2025-11-30T14:48:00.000Z",
         factory_contract_addr: "neutron789factory",
-        remote_staking_denom: "uatom",
+        remote_staking_denom: "ustars",
         reward_distribution_type: { Daily: { num_of_days: 30 } },
         target_position: 50,
         validator_address:
@@ -89,6 +141,30 @@ export const campaignsInfo: (Campaign & {
       ],
       state: "Active" as const,
     },
+    pledges: [
+      {
+        amount: (1_000_000).toString(),
+        pledge_address: "stars12emutgfv7hy46khk5x36e9fczuvk9ktp4ep7xd",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (7_000_000).toString(),
+        pledge_address: "stars1fhznrvfyv25f27se8pqw79ytfcwh45j02lswy6",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (2_000_000).toString(),
+        pledge_address: "stars1mz2qks48v486d9m8wp4l9fxm2e9l0e0kfg23qv",
+        pledge_type: {
+          Redelegation: {
+            from_validators: [
+              "starsvaloper1ulvgmlttxhrnmegu57sj0n2qc7xvtrn9245jtu",
+              "starsvaloper1mz2qks48v486d9m8wp4l9fxm2e9l0e0kzk79m5",
+            ],
+          },
+        },
+      },
+    ],
   },
 ]
   .filter(({ connection_id }) => isAvailableConnectionId(connection_id))

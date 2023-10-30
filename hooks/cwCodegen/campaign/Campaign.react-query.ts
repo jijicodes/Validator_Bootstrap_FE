@@ -4,34 +4,16 @@
 * and run the @cosmwasm/ts-codegen generate command to regenerate this file.
 */
 
-import { UseQueryOptions, useQuery, useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { UseQueryOptions, useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import { Timestamp, Uint64, RewardDistributionType, InstantiateMsg, ExecuteMsg, Uint128, PledgeType, UserPledgeType, Pledge, UserPledge, UserRedelegation, QueryMsg, ArrayOfPledge, Addr, CampaignState, PendingStartState, EndedState, CampaignStatusResponse, CampaignInfo, Coin } from "./Campaign.types";
+import { Timestamp, Uint64, RewardDistributionType, InstantiateMsg, ExecuteMsg, Uint128, PledgeType, UserPledgeType, Pledge, UserPledge, UserRedelegation, QueryMsg, ArrayOfPledge, RewardsToDistributeNowResponse, Coin, Addr, CampaignState, PendingStartState, EndedState, CampaignStatusResponse, CampaignInfo, DistributedRewards } from "./Campaign.types";
 import { CampaignQueryClient, CampaignClient } from "./Campaign.client";
 export interface CampaignReactQuery<TResponse, TData = TResponse> {
   client: CampaignQueryClient | undefined;
   options?: Omit<UseQueryOptions<TResponse, Error, TData>, "'queryKey' | 'queryFn' | 'initialData'"> & {
     initialData?: undefined;
   };
-}
-export interface CampaignStatusQuery<TData> extends CampaignReactQuery<StatusResponse, TData> {}
-export function useCampaignStatusQuery<TData = StatusResponse>({
-  client,
-  options
-}: CampaignStatusQuery<TData>) {
-  return useQuery<StatusResponse, Error, TData>(["campaignStatus", client?.contractAddress], () => client ? client.status() : Promise.reject(new Error("Invalid client")), { ...options,
-    enabled: !!client && (options?.enabled != undefined ? options.enabled : true)
-  });
-}
-export interface CampaignAllPledgesQuery<TData> extends CampaignReactQuery<AllPledgesResponse, TData> {}
-export function useCampaignAllPledgesQuery<TData = AllPledgesResponse>({
-  client,
-  options
-}: CampaignAllPledgesQuery<TData>) {
-  return useQuery<AllPledgesResponse, Error, TData>(["campaignAllPledges", client?.contractAddress], () => client ? client.allPledges() : Promise.reject(new Error("Invalid client")), { ...options,
-    enabled: !!client && (options?.enabled != undefined ? options.enabled : true)
-  });
 }
 export interface CampaignExecuteDelegationsMutation {
   client: CampaignClient;
@@ -50,24 +32,6 @@ export function useCampaignExecuteDelegationsMutation(options?: Omit<UseMutation
       funds
     } = {}
   }) => client.executeDelegations(fee, memo, funds), options);
-}
-export interface CampaignCancelPledgeMutation {
-  client: CampaignClient;
-  args?: {
-    fee?: number | StdFee | "auto";
-    memo?: string;
-    funds?: Coin[];
-  };
-}
-export function useCampaignCancelPledgeMutation(options?: Omit<UseMutationOptions<ExecuteResult, Error, CampaignCancelPledgeMutation>, "mutationFn">) {
-  return useMutation<ExecuteResult, Error, CampaignCancelPledgeMutation>(({
-    client,
-    args: {
-      fee,
-      memo,
-      funds
-    } = {}
-  }) => client.cancelPledge(fee, memo, funds), options);
 }
 export interface CampaignPledgeMutation {
   client: CampaignClient;
