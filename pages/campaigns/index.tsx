@@ -5,7 +5,7 @@ import { CampaignsIndex } from "../../components/CampaignsIndex/CampaignsIndex";
 
 const Page = () => {
   return (
-    <Box direction="column">
+    <Box direction="column" pad={{ horizontal: "5vw" }}>
       <Box>
         <Button as={Link} href="/" label="Back" />
       </Box>

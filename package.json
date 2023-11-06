@@ -40,7 +40,8 @@
     "react-dom": "18.2.0",
     "react-icons": "4.6.0",
     "react-router-dom": "^6.16.0",
-    "styled-components": "5.3.11"
+    "styled-components": "5.3.11",
+    "ts-pattern": "^5.0.5"
   },
   "devDependencies": {
     "@cosmwasm/ts-codegen": "^0.35.3",
