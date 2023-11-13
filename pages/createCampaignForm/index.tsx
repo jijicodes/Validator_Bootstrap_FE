@@ -1,20 +1,19 @@
 import { Box, Button, Text } from "grommet";
 import React from "react";
 import Link from "next/link";
-import { CampaignsIndex } from "../../components/CampaignsIndex/CampaignsIndex";
+import { CreateCampaignForm } from "../../components/CreateCampaignForm/CreateCampaignForm";
 
-const Page = () => {
+export const Page = () => {
   return (
     <Box direction="column" pad={{ horizontal: "5vw" }}>
       <Box>
         <Button as={Link} href="/" label="Back" />
       </Box>
       <Box align="center">
-        <Text>Campaign page</Text>
-        <Box>
-          <CampaignsIndex />
-        </Box>
+        <CreateCampaignForm />
       </Box>
     </Box>
   );
 };
+
+export default Page;

@@ -47,8 +47,9 @@ export const fetchVal = (chainId: AvailableChain) =>
       return validators;
     });
 
-export const useQueryValidator = (chainId: AvailableChain, addr: string) =>
-  useQuery({
+export const useQueryValidator = (chainId: AvailableChain) => {
+  return useQuery({
     queryKey: ["validator", chainId],
     queryFn: () => fetchVal(chainId),
   });
+};

@@ -21,11 +21,11 @@ export const chains = {
     rest: "https://rest.cosmos.directory/terra2",
     rpc: "https://rpc.cosmos.directory/terra2",
   },
-  "connection-15": {
-    chainId: "stride-1",
-    rest: "https://rest.cosmos.directory/stride",
-    rpc: "https://rpc.cosmos.directory/stride",
-  },
+  // "connection-15": {
+  //   chainId: "stride-1",
+  //   rest: "https://rest.cosmos.directory/stride",
+  //   rpc: "https://rpc.cosmos.directory/stride",
+  // },
   "connection-18": {
     chainId: "osmosis-1",
     rest: "https://rest.cosmos.directory/osmosis",

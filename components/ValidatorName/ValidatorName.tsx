@@ -17,7 +17,7 @@ export const ValidatorName = ({
   withCommission,
   borderRadius = "10",
 }: Props) => {
-  const { data: validators } = useQueryValidator(chainId, valoperAddress);
+  const { data: validators } = useQueryValidator(chainId);
   const matchingValidator = validators?.find(
     ({ operator_address }) => operator_address === valoperAddress
   );
