@@ -1,20 +1,20 @@
-import { cosmos } from 'osmojs';
-import { PageRequest } from './protos/cosmos/base/query/v1beta1/pagination';
-import { Validator } from 'osmojs/dist/codegen/tendermint/abci/types';
+import { cosmos } from "osmojs";
+import { PageRequest } from "./protos/cosmos/base/query/v1beta1/pagination";
+import { Validator } from "osmojs/dist/codegen/tendermint/abci/types";
 import {
   RedelegationResp,
   RedelegationResponse,
   isQueryError,
-} from './redelegations';
-import { coin } from '@cosmjs/launchpad';
-import parseISO from 'date-fns/parseISO';
+} from "./redelegations";
+import { coin } from "@cosmjs/launchpad";
+import parseISO from "date-fns/parseISO";
 import {
   AuthorizationType,
   StakeAuthorization,
-} from 'osmojs/dist/codegen/cosmos/staking/v1beta1/authz';
-import { GrantAuthorization } from 'osmojs/dist/codegen/cosmos/authz/v1beta1/authz';
+} from "osmojs/dist/codegen/cosmos/staking/v1beta1/authz";
+import { GrantAuthorization } from "osmojs/dist/codegen/cosmos/authz/v1beta1/authz";
 
-import { Coin } from '@cosmjs/stargate';
+import { Coin } from "@cosmjs/stargate";
 
 const fetchRedelegations = (rest: string, delegatorAddress: string) => () =>
   fetch(
@@ -30,7 +30,7 @@ const fetchRedelegations = (rest: string, delegatorAddress: string) => () =>
             list: RedelegationResponse[];
             record: Record<string, string>;
           } => {
-        console.log('fetching redelegation records for ' + rest, data);
+        console.log("fetching redelegation records for " + rest, data);
         return isQueryError(data)
           ? undefined
           : {
@@ -44,7 +44,7 @@ const fetchRedelegations = (rest: string, delegatorAddress: string) => () =>
                           redelegation_entry: { completion_time },
                         }): [
                           validatorAddress: string,
-                          completionTime: string,
+                          completionTime: string
                         ] => [validator_dst_address, completion_time]
                       )
                   )
@@ -67,7 +67,7 @@ const userGrant = async (
   } = await client.cosmos.authz.v1beta1.grants({
     granter: delegatorAddress,
     grantee: granteeAddress,
-    msgTypeUrl: '/cosmos.staking.v1beta1.StakeAuthorization',
+    msgTypeUrl: "/cosmos.staking.v1beta1.StakeAuthorization",
     pagination: PageRequest.fromPartial({}),
   });
 
@@ -75,7 +75,7 @@ const userGrant = async (
     grant &&
     grant.authorization &&
     grant.authorization.$typeUrl ===
-      '/cosmos.staking.v1beta1.StakeAuthorization' &&
+      "/cosmos.staking.v1beta1.StakeAuthorization" &&
     (grant.authorization.authorizationType ===
       AuthorizationType.AUTHORIZATION_TYPE_DELEGATE ||
       grant.authorization.authorizationType ===
@@ -125,7 +125,7 @@ const queryAvailableUserFunds = async (
               ): [
                 granter: string,
                 availableFunds: Coin | undefined,
-                authorization: StakeAuthorization,
+                authorization: StakeAuthorization
               ] => [granter, availableFunds, authorization]
             )
           )
@@ -135,12 +135,12 @@ const queryAvailableUserFunds = async (
     );
 
 const isStakeAuthorization = (
-  authorization: GrantAuthorization['authorization']
+  authorization: GrantAuthorization["authorization"]
   // @ts-ignore
 ): authorization is StakeAuthorization =>
   !!(
     authorization &&
-    authorization.$typeUrl === '/cosmos.staking.v1beta1.StakeAuthorization' &&
+    authorization.$typeUrl === "/cosmos.staking.v1beta1.StakeAuthorization" &&
     (authorization.authorizationType ===
       AuthorizationType.AUTHORIZATION_TYPE_DELEGATE ||
       authorization.authorizationType ===
@@ -211,7 +211,7 @@ const getValidators = (
 ): Promise<Validator[]> =>
   client.cosmos.staking.v1beta1
     .validators({
-      status: '1',
+      status: "1",
 
       pagination: PageRequest.fromPartial({
         limit: Math.min(limit, 50),

@@ -17,12 +17,14 @@ import { campaignsInfo } from "../../utils/campaignsInfo";
 import { chains } from "../../utils/chains";
 import { P, match } from "ts-pattern";
 import { stateRank } from "../Utils/campaignStateUtils";
+import { useScreenSize } from "../../hooks/useScreenSize";
 
 export const CampaignsIndex = () => {
+  const { pageGutterWidth } = useScreenSize();
   return (
     <Box
       fill
-      pad={{ horizontal: "medium", vertical: "small" }}
+      pad={{ horizontal: pageGutterWidth, vertical: "small" }}
       gap="small"
       align="center"
     >
