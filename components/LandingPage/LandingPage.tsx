@@ -1,39 +1,69 @@
 import React from "react";
-import { Box, Text, Button } from "grommet";
-import Link from "next/link";
+import NextLink from "next/link";
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Center,
+  Flex,
+  Text,
+  Heading,
+  SimpleGrid,
+} from "@chakra-ui/react";
 
 export const LandingPage = () => {
   return (
-    <Box align="center" gap="medium">
-      <Text>Validator Bootstrap</Text>
-      <Box gap="medium">
-        <Box direction="column" gap="small">
-          <Box>
-            Validators, We are here to help you to get in the active chain you
-            want to be in. Go ahead create a new campaign.
-          </Box>
-          <Box align="center">
-            <Button
-              primary
-              as={Link}
-              href="/createCampaignForm"
-              label="Create a new campaign"
-            />
-          </Box>
-        </Box>
-        <Box gap="small" direction="column">
-          <Box>Individuals, you can participate to pledge the campaign</Box>{" "}
-          <Box align="center">
-            <Button
-              primary
-              as={Link}
-              href="/campaigns"
-              label="Participate to pledge"
-            />
-          </Box>
-        </Box>
-      </Box>{" "}
-    </Box>
+    <Flex direction={"column"}>
+      <Heading mb={4} alignSelf="center">
+        Validator Bootstrap
+      </Heading>
+      <SimpleGrid alignSelf="center" spacing={4}>
+        <Card
+          align="center"
+          direction={"column"}
+          justify={"center"}
+          variant={"filled"}
+        >
+          <CardHeader>
+            <Heading size="md">Create a new campaign</Heading>
+          </CardHeader>
+          <CardBody>
+            <Text>
+              {" "}
+              Validators, We are here to help you to get in the active chain you
+              want to be in. Go ahead create a new campaign.
+            </Text>
+          </CardBody>
+          <CardFooter>
+            {" "}
+            <NextLink href="/createCampaignForm">
+              <Button colorScheme="teal">Create Campaign</Button>
+            </NextLink>
+          </CardFooter>
+        </Card>
+        <Card
+          align="center"
+          direction={"column"}
+          justify={"center"}
+          variant={"filled"}
+        >
+          <CardHeader>
+            <Heading size="md">Participate to pledge</Heading>
+          </CardHeader>
+          <CardBody>
+            <Text>Individuals, you can participate to pledge the campaign</Text>
+          </CardBody>
+          <CardFooter>
+            <NextLink href="/campaigns">
+              <Button colorScheme="teal">Pledge</Button>
+            </NextLink>
+          </CardFooter>
+        </Card>
+      </SimpleGrid>
+    </Flex>
   );
 };
 
