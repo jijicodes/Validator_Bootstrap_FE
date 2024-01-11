@@ -21,10 +21,10 @@ export const CreateCampaignForm = () => {
     useForm<NewCampaign>({
       defaultValues: {
         // TODO: should be cosmoshub-4 when we ship to prod
-        chainId: "kaiyo-1",
+        chainId: undefined,
         validatorAddress: {},
         targetPosition: "",
-        duration: "30 days",
+        duration: "",
       },
     });
   const selectedValue = watch([
@@ -41,7 +41,7 @@ export const CreateCampaignForm = () => {
     endpoint: rest,
   }));
   const { data: validatorsInfo, isLoading: validatorListLoading } =
-    useQueryValidator(selectedValue[0]);
+    useQueryValidator(selectedValue[0] || "kaiyo-1");
 
   const validatorsOption = validatorsInfo?.map((v) => ({
     name: v.description.moniker,
@@ -86,7 +86,11 @@ export const CreateCampaignForm = () => {
         <ChainDashbaord
           active={validatorSetInfo.activeValidatorsCount}
           all={validatorSetInfo.allValidatorsCount}
-          chainName={selectedValue[0]}
+          chainName={
+            registryChains?.find(
+              (chainInfo) => chainInfo?.chain_id === selectedValue[0]
+            )?.pretty_name
+          }
           validatorName={selectedValue[1]}
           validatorsInfo={validatorSetInfo?.entireValidatorsList?.find(
             (v) => v.description.moniker === selectedValue[1].name
@@ -123,7 +127,7 @@ export const CreateCampaignForm = () => {
                 </FormField>
               )}
             />
-            {/* <Controller
+            <Controller
               name="validatorAddress"
               control={control}
               render={({ field }) => (
@@ -197,7 +201,7 @@ export const CreateCampaignForm = () => {
                   />
                 </FormField>
               )}
-            /> */}
+            />
           </form>
         </Box>
         {/* //current position
