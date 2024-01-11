@@ -123,7 +123,7 @@ export const CreateCampaignForm = () => {
                 </FormField>
               )}
             />
-            <Controller
+            {/* <Controller
               name="validatorAddress"
               control={control}
               render={({ field }) => (
@@ -190,14 +190,14 @@ export const CreateCampaignForm = () => {
                     valueKey="value"
                     labelKey="label"
                     onChange={(e) => {
-                      console.log(e);
+                      return field.onChange(e.value);
                     }}
                     icon={<Search size="16px" />}
                     options={["30 Days", "45 Days", "60 Days", "90 Days"]}
                   />
                 </FormField>
               )}
-            />
+            /> */}
           </form>
         </Box>
         {/* //current position
