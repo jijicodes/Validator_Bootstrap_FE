@@ -1,4 +1,4 @@
-import { Box, Button, Text } from "grommet";
+import { Box, Button, Header, Text } from "grommet";
 import React from "react";
 import Link from "next/link";
 import { CampaignsIndex } from "../../components/CampaignsIndex/CampaignsIndex";
@@ -6,14 +6,14 @@ import { CampaignsIndex } from "../../components/CampaignsIndex/CampaignsIndex";
 const Page = () => {
   return (
     <Box direction="column" pad={{ horizontal: "5vw" }}>
-      <Box>
-        <Button as={Link} href="/" label="Back" />
-      </Box>
-      <Box align="center">
-        <Text>Campaign page</Text>
+      <Header justify="between">
         <Box>
-          <CampaignsIndex />
+          <Button as={Link} href="/" label="Back" />
         </Box>
+      </Header>
+
+      <Box align="center">
+        <CampaignsIndex />
       </Box>
     </Box>
   );

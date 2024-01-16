@@ -20,11 +20,9 @@ import { stateRank } from "../Utils/campaignStateUtils";
 import { useScreenSize } from "../../hooks/useScreenSize";
 
 export const CampaignsIndex = () => {
-  const { pageGutterWidth } = useScreenSize();
   return (
     <Box
-      fill
-      pad={{ horizontal: pageGutterWidth, vertical: "small" }}
+      // fill
       gap="small"
       align="center"
     >
@@ -36,7 +34,7 @@ export const CampaignsIndex = () => {
         <TableHeader>
           <TableCell>
             <Text>Validator</Text>
-          </TableCell>{" "}
+          </TableCell>
           <TableCell>
             <Text>Status</Text>
           </TableCell>
@@ -52,12 +50,12 @@ export const CampaignsIndex = () => {
         </TableHeader>
         <TableBody>
           {campaignsInfo
-            .sort(
-              (
-                { campaignStatus: { state: a } },
-                { campaignStatus: { state: b } }
-              ) => stateRank(a) - stateRank(b)
-            )
+            // .sort(
+            //   (
+            //     { campaignStatus: { state: a } },
+            //     { campaignStatus: { state: b } }
+            //   ) => stateRank(a) - stateRank(b)
+            // )
             .map(
               ({
                 campaign_addr,

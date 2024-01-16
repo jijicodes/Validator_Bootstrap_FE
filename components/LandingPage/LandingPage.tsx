@@ -32,14 +32,12 @@ export const LandingPage = () => {
           </CardHeader>
           <CardBody>
             <Text>
-              {" "}
               Validators, We are here to help you to get in the active chain you
               want to be in. Go ahead create a new campaign.
             </Text>
           </CardBody>
           <CardFooter>
-            {" "}
-            <NextLink href="/createCampaignForm">
+            <NextLink href="/create-campaign-form">
               <Button colorScheme="teal">Create Campaign</Button>
             </NextLink>
           </CardFooter>

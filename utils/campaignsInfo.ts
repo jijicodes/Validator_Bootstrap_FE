@@ -10,6 +10,7 @@ import {
   isAvailableConnectionId,
 } from "./chains";
 import { coin } from "@cosmjs/stargate";
+import { stateRank } from "../components/Utils/campaignStateUtils";
 
 export const campaignsInfo: (Campaign & {
   campaignStatus: CampaignStatusResponse;
@@ -185,9 +186,69 @@ export const campaignsInfo: (Campaign & {
       },
     ],
   },
+
+  {
+    campaign_addr:
+      "neutron12pwnhtv7yat2s30xuf4gdk9qm85v4j3e6p44let47pdffpklcxlq56v0te",
+    connection_id: "connection-23",
+    target_position: 50,
+    campaignStatus: {
+      campaign_info: {
+        connection_id: "connection-23",
+        expiration: "2025-11-30T14:48:00.000Z",
+        factory_contract_addr: "neutron789factory",
+        remote_staking_denom: "ustars",
+        reward_distribution_type: { Daily: { num_of_days: 30 } },
+        target_position: 50,
+        validator_address:
+          "starsvaloper12v7p7unjm6wcj5ezak5zfneq05pfy8dps9c9jw",
+      },
+      reward_tokens: [
+        {
+          amount: (100_000_000).toString(),
+          denom:
+            "ibc/F663521BF1836B00F5F177680F74BFB9A8B5654A694D0D2BC249E03CF2509013",
+        },
+        {
+          amount: (2_000_000_000).toString(),
+          denom:
+            "ibc/B05539B66B72E2739B986B86391E5D08F12B8D5D2C2A7F8F8CF9ADF674DFA231",
+        },
+      ],
+      state: "Active" as const,
+    },
+    pledges: [
+      {
+        amount: (1_000_000).toString(),
+        pledge_address: "stars12emutgfv7hy46khk5x36e9fczuvk9ktp4ep7xd",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (7_000_000).toString(),
+        pledge_address: "stars1fhznrvfyv25f27se8pqw79ytfcwh45j02lswy6",
+        pledge_type: "Delegation",
+      },
+      {
+        amount: (2_000_000).toString(),
+        pledge_address: "stars1mz2qks48v486d9m8wp4l9fxm2e9l0e0kfg23qv",
+        pledge_type: {
+          Redelegation: {
+            from_validators: [
+              "starsvaloper1ulvgmlttxhrnmegu57sj0n2qc7xvtrn9245jtu",
+              "starsvaloper1mz2qks48v486d9m8wp4l9fxm2e9l0e0kzk79m5",
+            ],
+          },
+        },
+      },
+    ],
+  },
 ]
   .filter(({ connection_id }) => isAvailableConnectionId(connection_id))
   .map((campaign) => ({
     ...campaign,
     connectionId: campaign.connection_id as AvailableConnectionId,
-  }));
+  }))
+  .sort(
+    ({ campaignStatus: { state: a } }, { campaignStatus: { state: b } }) =>
+      stateRank(a) - stateRank(b)
+  );
